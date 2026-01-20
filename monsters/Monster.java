@@ -43,4 +43,13 @@ public abstract class Monster {
         hp += points;
         if (hp > hpMax) hp = hpMax;
     }
+
+    public abstract int attack(Monster target);
+
+    @Override
+    public String toString() {
+        return name + " (" + getType() + ") - PV: " + hp + "/" + hpMax + " - ATK: " + atk;
+    }
+
+    public abstract String getType();
 }
