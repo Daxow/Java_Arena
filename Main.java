@@ -1,32 +1,25 @@
-import monsters.*;
+import player.*;
+import monsters.Monster;
+import utils.Generator;
 
 public class Main {
     public static void main(String[] args) {
-        Monster fire = new FireMonster("Dracaufeu");
-        Monster water = new WaterMonster("Aquali");
-        Monster plant = new PlantMonster("Bulbizarre");
 
-        System.out.println("DEBUT");
-        System.out.println(fire);
-        System.out.println(water);
-        System.out.println(plant);
+        Player player1 = new Player(" TeamTest");
 
-        System.out.println("\nTEST ATTAQUE");
-
-        System.out.println(fire.getName() + " attaque " + plant.getName() + " -> " + fire.attack(plant) + " degats");
-        System.out.println(plant);
-
-        System.out.println(water.getName() + " attaque " + fire.getName() + " -> " + water.attack(fire) + " degats");
-        System.out.println(fire);
-
-        System.out.println(plant.getName() + " attaque " + water.getName() + " -> " + plant.attack(water) + " degats");
-        System.out.println(water);
-
-        System.out.println("\nTEST KO");
-        while (!fire.isKO()) {
-            water.attack(fire);
+        for (int i = 0; i < 3; i++) {
+            Monster monster = Generator.createRandomMonster();
+            player1.addMonster(monster);
         }
-        System.out.println(fire.getName() + " est KO ? " + fire.isKO());
-        System.out.println(fire);
+
+        player1.getInventory().addItem("PotionSoin", 2);
+        player1.getInventory().addItem("Rappel", 1);
+        player1.getInventory().addItem("PokéBall", 2);
+
+        player1.displayTeam();
+        player1.getInventory().display();
+        player1.addMoney(10000);
+        System.out.println("Credits: " + player1.getMoney());
+        
     }
 }
