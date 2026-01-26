@@ -3,6 +3,7 @@ import exceptions.IllegalActionException;
 import monsters.Monster;
 import player.Player;
 import utils.Generator;
+import utils.Save;
 
 import java.util.Scanner;
 
@@ -12,24 +13,22 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Entrez le nom de votre équipe :");
-        System.out.print("> ");
-        String teamName = scanner.nextLine();
+        System.out.println("\n[ JAVA ARENA ]");
+        System.out.println("\n1 -> Nouvelle partie");
+        System.out.println("2 -> Charger la partie");
 
-        if (teamName.isBlank()) {
-            teamName = "Equipe";
+        int startChoice = readInt(scanner);
+        Player player;
+
+        if (startChoice == 2) {
+            player = Save.load();
+            if (player == null) {
+                System.out.println("Création d'une nouvelle partie.");
+                player = createNewPlayer(scanner);
+            }
+        } else {
+            player = createNewPlayer(scanner);
         }
-
-        Player player = new Player(teamName);
-
-        for (int i = 0; i < 3; i++) {
-            player.addMonster(Generator.createRandomMonster());
-        }
-
-        player.getInventory().addItem("Potion de soin", 2);
-        player.getInventory().addItem("Rappel", 1);
-        player.getInventory().addItem("PokéBall", 2);
-        player.addMoney(500);
 
         boolean running = true;
 
@@ -58,12 +57,41 @@ public class Main {
                 }
                 case 3 -> startBattle(player, scanner);
                 case 4 -> shop(player, scanner);
-                case 5 -> running = false;
+                case 5 -> {
+                    Save.save(player);
+                    running = false;
+                }
                 default -> System.out.println("Choix invalide.");
             }
         }
 
         scanner.close();
+    }
+
+    // ===================== CRÉATION JOUEUR =====================
+
+    private static Player createNewPlayer(Scanner scanner) {
+
+        System.out.println("Entrez le nom de votre équipe :");
+        System.out.print("> ");
+        String teamName = scanner.nextLine();
+
+        if (teamName.isBlank()) {
+            teamName = "Equipe";
+        }
+
+        Player player = new Player(teamName);
+
+        for (int i = 0; i < 3; i++) {
+            player.addMonster(Generator.createRandomMonster());
+        }
+
+        player.getInventory().addItem("Potion de soin", 2);
+        player.getInventory().addItem("Rappel", 1);
+        player.getInventory().addItem("PokéBall", 2);
+        player.addMoney(500);
+
+        return player;
     }
 
     // ===================== BOUTIQUE =====================
@@ -132,6 +160,7 @@ public class Main {
 
             if (active.isKO()) {
                 System.out.println(active.getName() + " (" + active.getType() + ") est KO.");
+                Thread.sleep(800);
                 System.out.println("Choisissez un autre monstre.");
                 Thread.sleep(800);
                 active = chooseMonster(player, scanner);
@@ -140,6 +169,7 @@ public class Main {
 
             if (enemy.isKO()) {
                 System.out.println(enemy.getName() + " (" + enemy.getType() + ") est vaincu.");
+                Thread.sleep(800);
                 player.addMoney(100);
                 System.out.println("100 crédits gagnés.");
                 Thread.sleep(1200);
@@ -254,10 +284,14 @@ public class Main {
         try {
             if (choice == 1) {
                 player.usePotion(target);
-                System.out.println("Potion utilisée sur " + target.getName() + " (" + target.getType() + ") : " + target.getHp() + "/" + target.getHpMax() + " PV");
+                System.out.println("Potion utilisée sur " + target.getName()
+                        + " (" + target.getType() + ") : "
+                        + target.getHp() + "/" + target.getHpMax() + " PV");
             } else if (choice == 2) {
                 player.useRevive(target);
-                System.out.println("Rappel utilisé sur " + target.getName() + " (" + target.getType() + ") : " + target.getHp() + "/" + target.getHpMax() + " PV");
+                System.out.println("Rappel utilisé sur " + target.getName()
+                        + " (" + target.getType() + ") : "
+                        + target.getHp() + "/" + target.getHpMax() + " PV");
             }
             return true;
         } catch (IllegalActionException e) {

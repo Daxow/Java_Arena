@@ -9,11 +9,8 @@ public class Battle {
         try {
             int damage = attacker.attack(target);
             System.out.println(attacker.getName() + " attaque " + target.getName() + " et fait " + damage + " dégâts.");
-            if (target.isKO()) {
-                System.out.println(target.getName() + " est KO !");
-            }
         } catch (IllegalActionException e) {
-            System.out.println(e.getMessage());
+                System.out.println(e.getMessage());
         }
     }
 }
