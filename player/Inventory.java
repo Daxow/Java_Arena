@@ -33,10 +33,10 @@ public class Inventory {
 
     public void display() {
         if (items.isEmpty()) {
-            System.out.println("Inventaire vide.");
+            System.out.println("\nInventaire vide.");
             return;
         }
-        System.out.println("Inventaire :");
+        System.out.println("\nInventaire :");
         for (Map.Entry<String, Integer> entry : items.entrySet()) {
             System.out.println("- " + entry.getKey() + " x" + entry.getValue());
         }

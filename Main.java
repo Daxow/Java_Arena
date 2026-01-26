@@ -36,14 +36,13 @@ public class Main {
         while (running) {
 
             System.out.println("\n[ MENU PRINCIPAL ]");
-            System.out.println("Equipe : " + teamName);
-            System.out.println("1 -> Mon équipe");
+            System.out.println("\n1 -> Mon équipe");
             System.out.println("2 -> Inventaire");
             System.out.println("3 -> Lancer un combat");
             System.out.println("4 -> Boutique");
             System.out.println("5 -> Quitter");
 
-            Thread.sleep(600);
+            Thread.sleep(800);
 
             int choice = readInt(scanner);
 
@@ -75,13 +74,13 @@ public class Main {
 
         while (inShop) {
             System.out.println("\n[ BOUTIQUE ]");
-            System.out.println("Crédits : " + player.getMoney());
-            System.out.println("1 -> Potion de soin (50 crédits)");
+            System.out.println("\nCrédits : " + player.getMoney());
+            System.out.println("\n1 -> Potion de soin (50 crédits)");
             System.out.println("2 -> Rappel (100 crédits)");
             System.out.println("3 -> PokéBall (75 crédits)");
             System.out.println("4 -> Retour");
 
-            Thread.sleep(600);
+            Thread.sleep(800);
 
             int choice = readInt(scanner);
 
@@ -93,7 +92,7 @@ public class Main {
                 default -> System.out.println("Choix invalide.");
             }
 
-            Thread.sleep(600);
+            Thread.sleep(800);
         }
     }
 
@@ -121,7 +120,7 @@ public class Main {
         Monster enemy = Generator.createRandomMonster();
         System.out.println("\nUn monstre sauvage apparaît : "
                 + enemy.getName() + " (" + enemy.getType() + ")");
-        Thread.sleep(1000);
+        Thread.sleep(800);
 
         while (true) {
 
@@ -134,7 +133,7 @@ public class Main {
             if (active.isKO()) {
                 System.out.println(active.getName() + " (" + active.getType() + ") est KO.");
                 System.out.println("Choisissez un autre monstre.");
-                Thread.sleep(1000);
+                Thread.sleep(800);
                 active = chooseMonster(player, scanner);
                 continue;
             }
@@ -148,6 +147,7 @@ public class Main {
             }
 
             System.out.println("\n- TOUR DU JOUEUR -");
+            System.out.print("\n");
             System.out.println(active.getName() + " (" + active.getType() + ") : "
                     + active.getHp() + "/" + active.getHpMax() + " PV");
             System.out.println(enemy.getName() + " (" + enemy.getType() + ") : "
@@ -155,7 +155,7 @@ public class Main {
 
             Thread.sleep(800);
 
-            System.out.println("1 -> Attaquer");
+            System.out.println("\n1 -> Attaquer");
             System.out.println("2 -> Changer de monstre");
             System.out.println("3 -> Utiliser un objet");
             System.out.println("4 -> Capturer");
@@ -181,9 +181,11 @@ public class Main {
                 case 3 -> actionValide = useItem(player, scanner);
                 case 4 -> {
                     try {
+                        System.out.println("Vous utilisez une PokéBall.");
+                        Thread.sleep(800);
                         player.tryCapture(enemy);
                         System.out.println(enemy.getName() + " (" + enemy.getType() + ") capturé.");
-                        Thread.sleep(1000);
+                        Thread.sleep(1200);
                         return;
                     } catch (IllegalActionException e) {
                         System.out.println(e.getMessage());
@@ -202,7 +204,7 @@ public class Main {
 
             if (actionValide && !enemy.isKO()) {
                 System.out.println("\nLe monstre adverse attaque.");
-                Thread.sleep(600);
+                Thread.sleep(800);
                 Battle.attack(enemy, active);
                 Thread.sleep(800);
             }
@@ -252,10 +254,10 @@ public class Main {
         try {
             if (choice == 1) {
                 player.usePotion(target);
-                System.out.println("Potion utilisée sur " + target);
+                System.out.println("Potion utilisée sur " + target.getName() + " (" + target.getType() + ") : " + target.getHp() + "/" + target.getHpMax() + " PV");
             } else if (choice == 2) {
                 player.useRevive(target);
-                System.out.println("Rappel utilisé sur " + target);
+                System.out.println("Rappel utilisé sur " + target.getName() + " (" + target.getType() + ") : " + target.getHp() + "/" + target.getHpMax() + " PV");
             }
             return true;
         } catch (IllegalActionException e) {

@@ -53,7 +53,7 @@ public class Player {
     }
 
     public void displayTeam() {
-        System.out.println("Equipe : " + teamName);
+        System.out.println("\nEquipe : " + teamName);
         if (team.isEmpty()) {
             System.out.println("Aucun monstre.");
             return;
@@ -70,6 +70,9 @@ public class Player {
     }
 
     public void usePotion(Monster monster) throws IllegalActionException {
+        if (monster.getHp() == monster.getHpMax()) {
+            throw new IllegalActionException("Ce monstre a déjà tous ses PV.");
+        }
         if (!inventory.consumeItem("Potion de soin")) {
             throw new IllegalActionException("Aucune potion disponible.");
         }
@@ -77,11 +80,11 @@ public class Player {
     }
 
     public void useRevive(Monster monster) throws IllegalActionException {
+        if (!monster.isKO()) {
+            throw new IllegalActionException("Ce monstre n'est pas KO.");
+        }
         if (!inventory.consumeItem("Rappel")) {
             throw new IllegalActionException("Aucun rappel disponible.");
-        }
-    if (!monster.isKO()) {
-        throw new IllegalActionException("Le monstre n'est pas KO.");
         }
     monster.heal(monster.getHpMax() / 2);
     }
