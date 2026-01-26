@@ -10,12 +10,17 @@ public class WaterMonster extends Monster {
     public int attack(Monster target) {
         int damage = getAtk();
 
-        if (target instanceof FireMonster) {
+        if (target.isWeakAgainst(this)) {
             damage *= 2;
         }
 
         target.receiveDamage(damage);
         return damage;
+    }
+
+    @Override
+    public boolean isWeakAgainst(Monster attacker) {
+        return attacker instanceof PlantMonster;
     }
 
     @Override

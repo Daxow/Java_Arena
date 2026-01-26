@@ -45,6 +45,8 @@ public abstract class Monster {
     }
 
     public abstract int attack(Monster target);
+    
+    public abstract boolean isWeakAgainst(Monster attacker);
 
     @Override
     public String toString() {
