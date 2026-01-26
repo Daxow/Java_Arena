@@ -1,5 +1,7 @@
 package monsters;
 
+import exceptions.IllegalActionException;
+
 public abstract class Monster {
 
     private String name;
@@ -39,12 +41,15 @@ public abstract class Monster {
         if (hp < 0) hp = 0;
     }
 
-    public void heal(int points) {
+    public void heal(int points) throws IllegalActionException {
+        if (hp == hpMax) {
+            throw new IllegalActionException("Le monstre a déjà tous ses PV.");
+        }
         hp += points;
         if (hp > hpMax) hp = hpMax;
     }
 
-    public abstract int attack(Monster target);
+    public abstract int attack(Monster target) throws IllegalActionException;
     
     public abstract boolean isWeakAgainst(Monster attacker);
 

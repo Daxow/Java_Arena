@@ -1,5 +1,7 @@
 package monsters;
 
+import exceptions.IllegalActionException;
+
 public class PlantMonster extends Monster {
 
     public PlantMonster(String name) {
@@ -7,7 +9,15 @@ public class PlantMonster extends Monster {
     }
 
     @Override
-    public int attack(Monster target) {
+    public int attack(Monster target) throws IllegalActionException {
+        if (this.isKO()) {
+            throw new IllegalActionException("Le monstre est KO et ne peut pas attaquer.");
+        }
+
+        if (target.isKO()) {
+            throw new IllegalActionException("La cible est déjà KO.");
+        }
+
         int damage = getAtk();
 
         if (target.isWeakAgainst(this)) {
